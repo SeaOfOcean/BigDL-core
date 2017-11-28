@@ -33,9 +33,9 @@ public class OpenCV {
 
     public static void load() {
         try {
-            String jopencvFileName = "opencv/linux/x86_64/libopencv_java320.so";
+            String jopencvFileName = "libopencv_java320.so";
             if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-                jopencvFileName = "opencv/osx/x86_64/libopencv_java320.dylib";
+                jopencvFileName = "libopencv_java320.dylib";
             }
             tmpFile = extract(jopencvFileName);
             System.load(tmpFile.getAbsolutePath());
@@ -72,12 +72,12 @@ public class OpenCV {
     // Extract so file from jar to a temp path
     private static File extract(String path) {
         try {
-            URL url = OpenCV.class.getClassLoader().getResource(path);
+            URL url = OpenCV.class.getResource("/" + path);
             if (url == null) {
                 throw new Error("Can't find so file in jar, path = " + path);
             }
 
-            InputStream in = OpenCV.class.getClassLoader().getResourceAsStream(path);
+            InputStream in = OpenCV.class.getResourceAsStream("/" + path);
             File file = createTempFile("dlNativeLoader", path.substring(path.lastIndexOf("/") + 1));
 
             ReadableByteChannel src = newChannel(in);
