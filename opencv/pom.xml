@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>parent</artifactId>
+        <groupId>com.intel.analytics.bigdl.core</groupId>
+        <version>0.4.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>opencv</artifactId>
+    <groupId>com.intel.analytics.bigdl.core.native</groupId>
+    <packaging>pom</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opencv</groupId>
+            <artifactId>org.opencv</artifactId>
+            <version>3.2.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/opencv/opencv-320.jar</systemPath>
+        </dependency>
+    </dependencies>
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.3</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <tasks>
+                                <echo>Extracting Java classes.</echo>
+                                <unjar src="${project.basedir}/src/main/resources/opencv/opencv-320.jar"
+                                       dest="${project.build.directory}/classes">
+                                    <patternset>
+                                        <include name="**/*.class"/>
+                                    </patternset>
+                                </unjar>
+
+                                <echo>Extracting Java sources.</echo>
+                                <unjar src="${project.basedir}/src/main/resources/opencv/opencv-320.jar"
+                                       dest="${project.build.directory}/upstream-sources">
+                                    <patternset>
+                                        <include name="**/*.java"/>
+                                    </patternset>
+                                </unjar>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
