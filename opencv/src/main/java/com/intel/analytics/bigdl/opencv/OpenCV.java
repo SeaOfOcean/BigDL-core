@@ -31,7 +31,7 @@ public class OpenCV {
     private static boolean isLoaded = false;
     private static File tmpFile = null;
 
-    public static void load() {
+    static {
         try {
             String jopencvFileName = "libopencv_java320.so";
             if (System.getProperty("os.name").toLowerCase().contains("mac")) {
@@ -41,7 +41,6 @@ public class OpenCV {
             System.load(tmpFile.getAbsolutePath());
             tmpFile.delete(); // delete so temp file after loaded
             isLoaded = true;
-
         } catch (Exception e) {
             isLoaded = false;
             e.printStackTrace();
@@ -63,7 +62,7 @@ public class OpenCV {
      * @return
      */
     public static String getTmpSoFilePath() {
-        if(tmpFile == null)
+        if (tmpFile == null)
             return "";
         else
             return tmpFile.getAbsolutePath();
@@ -71,12 +70,11 @@ public class OpenCV {
 
     // Extract so file from jar to a temp path
     private static File extract(String path) {
+        URL url = OpenCV.class.getResource("/" + path);
+        if (url == null) {
+            throw new Error("Can't find so file in jar, path = " + path);
+        }
         try {
-            URL url = OpenCV.class.getResource("/" + path);
-            if (url == null) {
-                throw new Error("Can't find so file in jar, path = " + path);
-            }
-
             InputStream in = OpenCV.class.getResourceAsStream("/" + path);
             File file = createTempFile("dlNativeLoader", path.substring(path.lastIndexOf("/") + 1));
 
@@ -88,10 +86,4 @@ public class OpenCV {
             throw new Error("Can't extract so file to /tmp dir");
         }
     }
-
-    public static void main(String[] args) {
-        OpenCV openCV = new OpenCV();
-        openCV.load();
-    }
-
 }
