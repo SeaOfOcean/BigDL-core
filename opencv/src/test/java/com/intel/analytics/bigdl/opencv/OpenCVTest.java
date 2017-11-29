@@ -23,7 +23,6 @@ import static org.junit.Assert.assertTrue;
 public class OpenCVTest {
     @Test
     public void isOpenCVLoaded() throws Exception {
-        System.out.println("load.......................");
         assertTrue(OpenCV.isOpenCVLoaded());
     }
 }
